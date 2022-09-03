@@ -1,6 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { NewsResponse } from '../interfaces';
+
+const apiKey = environment.apiKey
+const url = environment.url
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +13,28 @@ export class NewsService {
 
   constructor(private http:HttpClient) { }
 
-  getTopHeadLines(){
-    return this.http.get<NewsResponse>('https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=6ff46ef6db2e46068fe1fb8b57df2ebe')
+  getTopHeadLines(page: number){
+    return this.http.get<NewsResponse>(`${url}/top-headlines`,{
+      params: {
+        apiKey:apiKey,
+        country:'us',
+        category:'business',
+        page:page
+
+      }
+    })
+  }
+
+  getTopHeadLinesByCategories(page: number, category: string){
+    return this.http.get<NewsResponse>(`${url}/top-headlines`,{
+      params: {
+        apiKey:apiKey,
+        country:'us',
+        category:category,
+        page:page
+
+      }
+    })
   }
 
 }
